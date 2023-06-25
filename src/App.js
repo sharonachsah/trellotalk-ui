@@ -137,6 +137,10 @@ class App extends React.Component {
         if (response) {
           const temp = response[0];
           const recipient_msg = temp["text"];
+          fetch(`http://localhost:80/botspeak?text=${recipient_msg}`, {
+            method: 'POST',
+            redirect: 'follow'
+          })
           const response_temp = { sender: "bot", msg: recipient_msg };
 
           this.setState(prevState => ({
