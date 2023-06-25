@@ -6,7 +6,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(0, 23, 43);
-  color: rgb(255, 255, 255); 
+  color: rgb(255, 255, 255);
   margin-top: 20px
 }
 
@@ -125,17 +125,38 @@ code {
   border-radius: 50%;
 }
 
-.secondary svg{
-  fill:rgb(30 38 44 / 97%);
-  box-sizing: content-box;
-}
-
 #senddata{
   padding: 5px 10px;
-  /* background-color: white; */
+  border-radius: 50%;
+  margin: 10px 7px;
+  fill: rgb(255, 0, 0);
+  height: 25px;
+  width: 20px;
+}
+
+.senddata{
+  padding: 5px 10px;
   border-radius: 50%;
   margin: 10px 7px;
   fill: rgb(0, 23, 43);
   height: 25px;
-  width: 20px;  
+  width: 20px;
+}
+
+.arrowbutton{
+  fill: rgb(0, 23, 43);
+  padding: 5px 10px;
+  border-radius: 50%;
+  margin: 10px 7px;
+  height: 25px;
+  width: 20px;
+}
+
+.arrowbutton:hover{
+  fill: rgb(108 135 159);
+  padding: 5px 10px;
+  border-radius: 50%;
+  margin: 10px 7px;
+  height: 25px;
+  width: 20px;
 }
