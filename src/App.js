@@ -16,7 +16,8 @@ class App extends React.Component {
       botTyping: false,
       isLoading: false,
       isRecording: false,
-      recordings: []
+      recordings: [],
+      transcribedtext: ''
     };
   }
 
@@ -49,20 +50,6 @@ class App extends React.Component {
     }
   };
 
-  saveRecording = (blob, filename) => {
-    const url = URL.createObjectURL(blob);
-    const anchorElement = document.createElement('a');
-    anchorElement.href = url;
-    anchorElement.download = filename;
-    anchorElement.click();
-    URL.revokeObjectURL(url);
-
-    // Delete the recorded audio file
-    URL.revokeObjectURL(this.state.recordings[this.state.recordings.length - 1]);
-    const recordings = this.state.recordings.slice(0, -1);
-    this.setState({ recordings });
-  };
-
   sendRecording = async (blob) => {
     var formData = new FormData();
     formData.append('file', blob);
@@ -75,7 +62,26 @@ class App extends React.Component {
     };
 
     try {
-      fetch("http://localhost:80/audio", requestOptions).then(response => response.text()).then(result => { console.log(result) }).catch(error => console.log('error', error));
+      fetch("http://localhost:80/audio", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          console.log(result);
+          result = result.replace(/['"]+/g, '');
+          const request_temp = { sender: "user", msg: result };
+
+          if (result !== "") {
+            this.setState(prevState => ({
+              chat: [...prevState.chat, request_temp],
+              botTyping: true,
+              inputMessage: ''
+            }));
+
+            this.rasaSendTextAPI(result);
+          }
+          })
+        .catch(error =>
+          console.log('error', error)
+        );
     }
     catch (err) {
       console.log(err);
@@ -142,8 +148,8 @@ class App extends React.Component {
   }
 
   render() {
-    const { chat, inputMessage, botTyping } = this.state;
-    const { isLoading, isRecording, recordings } = this.state;
+    const { chat }  = this.state;
+    const { isLoading, isRecording } = this.state;
 
     return (
       <div className="App">
@@ -197,7 +203,10 @@ class App extends React.Component {
                 )}
               </div>
             ))}
+
           </div>
+
+
         </div>
 
         <div className='sendinputdiv'>
